@@ -1,6 +1,6 @@
 # The Lounge
 
-현대적인 기술 스택을 활용하여 구축된 커뮤니티 및 블로그 플랫폼 프로젝트입니다.
+현대적인 기술 스택과 Supabase를 활용하여 구축된 커뮤니티 및 블로그 플랫폼 프로젝트입니다.
 
 ## 🚀 기술 스택
 
@@ -15,7 +15,7 @@
 ### 백엔드 (Server)
 - **Node.js & Express**: 안정적인 서버 환경 및 프레임워크
 - **Prisma**: 생산성 높은 데이터베이스 ORM
-- **SQLite**: 가볍고 빠른 데이터베이스 파일
+- **PostgreSQL (Supabase)**: 강력한 오픈소스 관계형 데이터베이스
 - **JWT (JSON Web Token)**: 안전한 사용자 인증 체계
 
 ---
@@ -73,10 +73,30 @@ npm run dev
 
 ---
 
-## 📝 주요 기능
-- **사용자 인증**: 회원가입, 로그인 및 JWT 기반 세션 관리
-- **게시글 관리**: 카테고리별 포스팅, 태그 기능, 썸네일 업로드
-- **상호작용**: 댓글 및 답글 기능, 좋아요 기능
-- **조회수**: 게시글 조회수 실시간 추적
+## 🚀 배포 가이드 (Deployment)
+
+### 1. 데이터베이스 (Supabase)
+- [Supabase](https://supabase.com/)에서 프로젝트를 생성합니다.
+- Database Settings에서 `Transaction` 및 `Session` 모드 URL을 확인합니다.
+- 서버 마이그레이션을 위해 `npx prisma migrate dev`를 실행합니다.
+
+### 2. 백엔드 (Render / Railway)
+- **Render** 또는 **Railway**와 같은 무료 티어 서비스를 이용합니다.
+- 환경 변수 설정:
+  - `DATABASE_URL`: Supabase Transaction URL (포트 6543)
+  - `DIRECT_URL`: Supabase Session URL (포트 5432)
+  - `JWT_SECRET`: 임의의 안전한 문자열
+  - `PORT`: 4000 (또는 서비스 기본값)
+
+### 3. 프론트엔드 (Vercel)
+- [Vercel](https://vercel.com/)에 `client` 폴더를 연결하여 배포합니다.
+- **Root Directory**: `client` 설정을 확인하세요.
+- **Environment Variables**:
+  - `VITE_API_URL`: 배포된 백엔드 서버의 주소 (예: `https://your-api.onrender.com`)
+- Vercel은 자동으로 HTTPS와 최적화된 빌드를 제공합니다.
+
+---
+
+모든 작업이 완료되었습니다! 이제 전 세계 어디서나 "The Lounge"에 접속할 수 있습니다.
 
 

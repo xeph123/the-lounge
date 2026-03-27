@@ -1,8 +1,8 @@
 # Build stage
-FROM node:20-alpine AS build
+FROM node:20-slim AS build
 
-# Add libc6-compat for Prisma
-RUN apk add --no-cache libc6-compat
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl
 
 WORKDIR /app
 
@@ -15,10 +15,10 @@ RUN npm run build
 RUN npm prune --production
 
 # Production stage
-FROM node:20-alpine
+FROM node:20-slim
 
-# Add libc6-compat for Prisma
-RUN apk add --no-cache libc6-compat
+# Install openssl for Prisma
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

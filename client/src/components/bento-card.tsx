@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { Badge } from "./ui/badge"
 import { Edit2, Trash2 } from "lucide-react"
-import axios from "axios"
+import api from "@/lib/api"
 import { useEffect, useState } from "react"
 
 interface BentoCardProps {
@@ -20,11 +20,8 @@ interface BentoCardProps {
 export function BentoCard({
   id,
   title,
-  description,
   category,
   thumbnail,
-  author,
-  date,
   className,
   size = "md",
 }: BentoCardProps) {
@@ -52,10 +49,7 @@ export function BentoCard({
     e.preventDefault()
     if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("token")
-        await axios.delete(`/api/posts/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.delete(`/posts/${id}`)
         window.location.reload()
       } catch (error) {
         console.error("Failed to delete post", error)

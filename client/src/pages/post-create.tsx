@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import axios from "axios"
+import api from "@/lib/api"
 import { Button } from "@/components/ui/button"
 import { ImagePlus, X } from "lucide-react"
 import ReactQuill from "react-quill-new"
@@ -30,7 +30,7 @@ export default function PostCreatePage() {
     if (isEditMode) {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`/api/posts/${id}`)
+          const response = await api.get(`/posts/${id}`)
           const post = response.data.data
           setTitle(post.title)
           setContent(post.content)
@@ -55,7 +55,7 @@ export default function PostCreatePage() {
     formData.append("image", file)
 
     try {
-      const response = await axios.post("/api/upload", formData, {
+      const response = await api.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -88,7 +88,7 @@ export default function PostCreatePage() {
         formData.append("image", file)
 
         try {
-          const response = await axios.post("/api/upload", formData, {
+          const response = await api.post("/upload", formData, {
             headers: { "Content-Type": "multipart/form-data" },
           })
           const url = response.data.url
@@ -144,14 +144,10 @@ export default function PostCreatePage() {
       }
 
       if (isEditMode) {
-        await axios.put(`/api/posts/${id}`, payload, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.put(`/posts/${id}`, payload)
         navigate(`/post/${id}`)
       } else {
-        await axios.post("/api/posts", payload, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.post("/posts", payload)
         navigate("/")
       }
     } catch (error: any) {

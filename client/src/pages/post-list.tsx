@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react"
 import { BentoCard } from "@/components/bento-card"
-import axios from "axios"
+import api from "@/lib/api"
 import { LayoutGrid, List, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Edit2, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Link, useNavigate } from "react-router-dom"
@@ -52,7 +52,7 @@ export default function PostListPage() {
     const fetchPosts = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`/api/posts?page=${currentPage}&limit=${limit}`)
+        const response = await api.get(`/posts?page=${currentPage}&limit=${limit}`)
         const responseData = response.data
         
         // Handle nested data structures correctly based on previous backend findings
@@ -129,10 +129,7 @@ export default function PostListPage() {
     e.preventDefault()
     if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("token")
-        await axios.delete(`/api/posts/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.delete(`/posts/${id}`)
         window.location.reload()
       } catch (error) {
         console.error("Failed to delete post", error)

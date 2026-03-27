@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import axios from "axios"
+import api from "@/lib/api"
 import { Shield, ShieldAlert, User, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from "react-router-dom"
@@ -21,12 +21,7 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     setLoading(true)
     try {
-      const token = localStorage.getItem("token")
-      const response = await axios.get("/api/users", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      const response = await api.get("/users")
       // Based on the login/profile logic, the response might be { data: users } or { data: { data: users } }
       setUsers(response.data.data || response.data)
     } catch (error) {
@@ -55,12 +50,7 @@ export default function AdminUsersPage() {
   const toggleRole = async (userId: string, currentRole: string) => {
     const newRole = currentRole === "ADMIN" ? "USER" : "ADMIN"
     try {
-      const token = localStorage.getItem("token")
-      await axios.put(`/api/users/${userId}/role`, { role: newRole }, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      await api.put(`/users/${userId}/role`, { role: newRole })
       
       // Update local state
       setUsers(prevUsers => 

@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { ArrowRight, Eye, EyeOff } from "lucide-react"
-import axios from "axios"
+import api from "@/lib/api"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
@@ -18,7 +18,7 @@ export default function LoginPage() {
 
     setIsLoading(true)
     try {
-      const response = await axios.post("/api/auth/login", { email, password })
+      const response = await api.post("/auth/login", { email, password })
 
       // Backend wraps the success response in a 'data' object.
       // So the structure is response.data = { data: { token, user } }

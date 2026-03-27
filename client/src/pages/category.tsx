@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useEffect, useState, useRef } from "react"
-import axios from "axios"
+import api from "@/lib/api"
 import { BentoCard } from "@/components/bento-card"
 import { LayoutGrid, List, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -38,7 +38,7 @@ export default function CategoryPage() {
     const fetchCategoryPosts = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`/api/posts?category=${slug}&page=${currentPage}&limit=${limit}`)
+        const response = await api.get(`/posts?category=${slug}&page=${currentPage}&limit=${limit}`)
         const responseData = response.data
         
         const data = Array.isArray(responseData.data) ? responseData.data : responseData.data?.posts || []

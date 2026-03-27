@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom"
 import { useEffect, useState, useRef } from "react"
-import axios from "axios"
+import api from "@/lib/api"
 import { BentoCard } from "@/components/bento-card"
 import { 
   Settings, X, Eye, EyeOff, LayoutGrid, List, 
@@ -60,7 +60,7 @@ export default function ProfilePage() {
     const fetchUserProfile = async () => {
       setLoading(true)
       try {
-        const response = await axios.get(`/api/users/${id}`)
+        const response = await api.get(`/users/${id}`)
         const userData = response.data.data
 
         setUser(userData)
@@ -132,7 +132,6 @@ export default function ProfilePage() {
 
     setIsSubmitting(true)
     try {
-      const token = localStorage.getItem("token")
       const payload: any = {
         name: editName,
         department: editDepartment,
@@ -142,11 +141,7 @@ export default function ProfilePage() {
         payload.password = editPassword
       }
 
-      const response = await axios.put(`/api/users/me`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      const response = await api.put(`/users/me`, payload)
 
       const updatedUser = response.data.data
       setUser((prev) => prev ? { ...prev, name: updatedUser.name, department: updatedUser.department, bio: updatedUser.bio } : null)
@@ -179,10 +174,7 @@ export default function ProfilePage() {
     e.preventDefault()
     if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("token")
-        await axios.delete(`/api/posts/${postId}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.delete(`/posts/${postId}`)
         setPosts(prev => prev.filter(p => p.id !== postId))
       } catch (error) {
         console.error("Failed to delete post", error)

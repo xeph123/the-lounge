@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, ArrowLeft, Eye, EyeOff } from "lucide-react"
-import axios from "axios"
+import api from "@/lib/api"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
     try {
       // Assuming a PUT or POST to /api/auth/reset-password
       // This endpoint needs to be implemented on the backend if it doesn't exist
-      await axios.post("/api/auth/reset-password", { email, name, newPassword })
+      await api.post("/auth/reset-password", { email, name, newPassword })
       alert("비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
       navigate("/login")
     } catch (error: any) {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from "axios"
+import api from "@/lib/api"
 import { X } from "lucide-react"
 
 interface SearchOverlayProps {
@@ -44,7 +44,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       }
       setIsSearching(true)
       try {
-        const response = await axios.get(`/api/posts?search=${encodeURIComponent(keyword)}`)
+        const response = await api.get(`/posts?search=${encodeURIComponent(keyword)}`)
         // Ensure we safely extract posts array based on typical structure
         const postsData = response.data?.data?.posts || response.data?.data || []
         setResults(Array.isArray(postsData) ? postsData : [])

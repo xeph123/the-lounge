@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { ArrowRight, Eye, EyeOff } from "lucide-react"
-import axios from "axios"
+import api from "@/lib/api"
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("")
@@ -27,7 +27,7 @@ export default function SignUpPage() {
 
     setIsLoading(true)
     try {
-      await axios.post("/api/auth/signup", {
+      await api.post("/auth/signup", {
         email,
         password,
         name,

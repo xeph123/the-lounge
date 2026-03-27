@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import axios from "axios"
+import api from "@/lib/api"
 import { Calendar, User, Eye, ArrowLeft, Edit2, Trash2, Send } from "lucide-react"
 import { Link } from "react-router-dom"
 import { Button } from "@/components/ui/button"
@@ -52,7 +52,7 @@ export default function PostDetailPage() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`/api/posts/${id}`)
+        const response = await api.get(`/posts/${id}`)
         setPost(response.data.data)
       } catch (error) {
         console.error("Failed to fetch post", error)
@@ -63,7 +63,7 @@ export default function PostDetailPage() {
 
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`/api/posts/${id}/comments`)
+        const response = await api.get(`/posts/${id}/comments`)
         // Assuming API returns { data: [...] }
         setComments(response.data.data || [])
       } catch (error) {
@@ -78,10 +78,7 @@ export default function PostDetailPage() {
   const handlePostDelete = async () => {
     if (!confirm("정말로 이 게시글을 삭제하시겠습니까?")) return
     try {
-      const token = localStorage.getItem("token")
-      await axios.delete(`/api/posts/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.delete(`/posts/${id}`)
       navigate("/")
     } catch (error: any) {
       console.error("Failed to delete post", error)
@@ -94,10 +91,7 @@ export default function PostDetailPage() {
     if (!newComment.trim()) return
 
     try {
-      const token = localStorage.getItem("token")
-      const response = await axios.post(`/api/posts/${id}/comments`, { content: newComment }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const response = await api.post(`/posts/${id}/comments`, { content: newComment })
       setComments([...comments, response.data.data || response.data])
       setNewComment("")
     } catch (error: any) {
@@ -109,10 +103,7 @@ export default function PostDetailPage() {
   const handleCommentDelete = async (commentId: string) => {
     if (!confirm("댓글을 삭제하시겠습니까?")) return
     try {
-      const token = localStorage.getItem("token")
-      await axios.delete(`/api/posts/${id}/comments/${commentId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.delete(`/posts/${id}/comments/${commentId}`)
       setComments(comments.filter(c => c.id !== commentId))
     } catch (error: any) {
       console.error("Failed to delete comment", error)
@@ -123,10 +114,7 @@ export default function PostDetailPage() {
   const handleCommentUpdate = async (commentId: string) => {
     if (!editingCommentContent.trim()) return
     try {
-      const token = localStorage.getItem("token")
-      await axios.put(`/api/posts/${id}/comments/${commentId}`, { content: editingCommentContent }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      await api.put(`/posts/${id}/comments/${commentId}`, { content: editingCommentContent })
       setComments(comments.map(c => c.id === commentId ? { ...c, content: editingCommentContent } : c))
       setEditingCommentId(null)
       setEditingCommentContent("")

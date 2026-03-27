@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
-import { BentoCard } from "@/components/bento-card"
-import { Button } from "@/components/ui/button"
 import { ArrowRight, Edit2, Trash2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import api from "@/lib/api"
 
 // Define a type for the post data we expect from the API
 interface Post {
@@ -38,7 +36,7 @@ export default function HomePage() {
     
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("/api/posts?sort=popular")
+        const response = await api.get("/posts?sort=popular")
         // Assuming response.data is an array of posts or { data: [...] }
         const data = Array.isArray(response.data) ? response.data : response.data.data || []
 
@@ -128,10 +126,7 @@ export default function HomePage() {
     e.preventDefault()
     if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
       try {
-        const token = localStorage.getItem("token")
-        await axios.delete(`/api/posts/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        })
+        await api.delete(`/posts/${id}`)
         window.location.reload()
       } catch (error) {
         console.error("Failed to delete post", error)

@@ -1,0 +1,30 @@
+# 의존성
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# 빌드 결과물
+client/dist/
+server/dist/
+server/dist-ssr/
+
+# 데이터베이스
+server/prisma/dev.db
+server/prisma/dev.db-journal
+server/uploads/
+
+# 환경 변수
+.env
+.env.local
+.env.*.local
+
+# OS 관련 파일
+.DS_Store
+Thumbs.db
+
+# 로그
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*

@@ -1,0 +1,76 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Noto+Serif+KR:wght@200..900&family=Poppins:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+@theme {
+  --font-serif: "Lora", "Noto Serif KR", serif;
+  --font-sans: "Pretendard", "Poppins", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-border: #E2E8F0;
+  --color-input: #E2E8F0;
+  --color-ring: #1A1F2C;
+  --color-background: #F8FAFC;
+  --color-foreground: #1A1F2C;
+
+  --color-primary: #1A1F2C;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #8E9196;
+  --color-secondary-foreground: #FFFFFF;
+  --color-accent: #6366F1;
+  --color-accent-foreground: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-foreground: #1A1F2C;
+  --color-paper: #F8FAFC;
+  --color-paper-foreground: #1A1F2C;
+
+  --radius-lg: var(--radius);
+  --radius-md: var(--radius);
+  --radius-sm: var(--radius);
+}
+
+@layer base {
+  :root {
+    --radius: 0px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+}
+
+/* Quill Editor Overrides */
+.ql-container.ql-snow {
+  border: none !important;
+  font-family: var(--font-sans) !important;
+  font-size: inherit !important;
+}
+
+.ql-toolbar.ql-snow {
+  border: none !important;
+  border-bottom: 1px solid var(--color-border) !important;
+  font-family: var(--font-sans) !important;
+  padding: 0 0 1rem 0 !important;
+  margin-bottom: 1rem !important;
+}
+
+.ql-editor {
+  padding: 0 !important;
+  font-family: var(--font-sans) !important;
+  font-size: inherit !important;
+  line-height: 1.8 !important;
+}
+
+.ql-editor.ql-blank::before {
+  left: 0 !important;
+  font-style: normal !important;
+  color: rgba(26, 31, 44, 0.3) !important; /* matching text-foreground/30 */
+}

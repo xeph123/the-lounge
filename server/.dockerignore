@@ -5,6 +5,6 @@ dist
 .gitignore
 README.md
 Dockerfile
-entrypoint.sh
+# entrypoint.sh (removed from ignore)
 prisma/*.db
 prisma/*.db-journal

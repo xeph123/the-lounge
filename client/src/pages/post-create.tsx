@@ -163,19 +163,19 @@ export default function PostCreatePage() {
 
   return (
     <div className="max-w-4xl mx-auto py-16 px-4 sm:px-8 bg-paper min-h-[85vh] flex flex-col font-sans">
-      <div className="flex items-center justify-between mb-16 border-b border-border pb-6">
-        <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 md:mb-16 border-b border-border pb-6 gap-4">
+        <div className="flex flex-wrap gap-3 md:gap-4">
           {["notice", "lounge", "tech", "idea"].map((slug) => (
             <button
               key={slug}
               onClick={() => setCategorySlug(slug)}
-              className={`text-[10px] font-bold uppercase tracking-[0.2em] transition-all pb-1 border-b-2 ${categorySlug === slug ? "text-primary border-primary" : "text-secondary/40 border-transparent hover:text-secondary"}`}
+              className={`text-[9px] md:text-[10px] font-bold uppercase tracking-[0.1em] md:tracking-[0.2em] transition-all pb-1 border-b-2 ${categorySlug === slug ? "text-primary border-primary" : "text-secondary/40 border-transparent hover:text-secondary"}`}
             >
               {slug}
             </button>
           ))}
         </div>
-        <p className="text-xs uppercase tracking-[0.2em] text-secondary/60 font-serif italic">
+        <p className="text-[10px] md:text-xs uppercase tracking-[0.2em] text-secondary/60 font-serif italic">
           Drafting New Story
         </p>
       </div>
@@ -223,7 +223,7 @@ export default function PostCreatePage() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="제목을 입력하세요"
-          className="w-full text-5xl md:text-7xl font-serif font-bold bg-transparent border-none outline-none placeholder:opacity-20 tracking-tight text-foreground transition-all focus:placeholder:opacity-0"
+          className="w-full text-3xl sm:text-5xl md:text-7xl font-serif font-bold bg-transparent border-none outline-none placeholder:opacity-20 tracking-tight text-foreground transition-all focus:placeholder:opacity-0"
         />
 
         <div className="h-px w-full bg-border/50" />
@@ -239,18 +239,18 @@ export default function PostCreatePage() {
         />
       </div>
 
-      <div className="flex justify-end items-end gap-12 mt-24 pb-8 border-t border-border pt-12">
+      <div className="flex justify-end items-end gap-6 md:gap-12 mt-16 md:mt-24 pb-8 border-t border-border pt-8 md:pt-12">
         <Button
           variant="ghost"
           onClick={() => navigate(-1)}
-          className="text-sm font-sans tracking-[0.2em] uppercase opacity-50 hover:text-blackasd hover:opacity-100 transition-opacity rounded-none px-0 hover:bg-transparent border-b border-transparent hover:border-foreground pb-1 h-auto mb-2"
+          className="text-xs md:text-sm font-sans tracking-[0.2em] uppercase opacity-50 hover:text-black hover:opacity-100 transition-opacity rounded-none px-0 hover:bg-transparent border-b border-transparent hover:border-foreground pb-1 h-auto mb-2 md:mb-2"
         >
           취소
         </Button>
         <Button
           onClick={handleSubmit}
           disabled={isSubmitting || isUploading}
-          className="text-xl md:text-2xl font-serif italic font-bold tracking-[0.1em] uppercase px-12 py-8 bg-primary text-primary-foreground transform translate-x-4 -translate-y-4 hover:bg-primary/90 transition-all duration-500 rounded-none shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] hover:translate-x-3 hover:-translate-y-3 disabled:opacity-50 disabled:hover:translate-x-4 disabled:hover:-translate-y-4"
+          className="text-base md:text-2xl font-serif italic font-bold tracking-[0.1em] uppercase px-8 md:px-12 py-6 md:py-8 bg-primary text-primary-foreground transform md:translate-x-4 md:-translate-y-4 hover:bg-primary/90 transition-all duration-500 rounded-none shadow-none md:shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-none md:hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] hover:translate-x-0 md:hover:translate-x-3 hover:-translate-y-0 md:hover:-translate-y-3 disabled:opacity-50 disabled:hover:translate-x-0 disabled:md:hover:translate-x-4 disabled:hover:-translate-y-0 disabled:md:hover:-translate-y-4"
         >
           {isSubmitting ? (isEditMode ? "수정 중..." : "발행 중...") : (isEditMode ? "수정하기" : "발행하기")}
         </Button>

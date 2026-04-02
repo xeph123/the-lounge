@@ -24,7 +24,7 @@ router.post('/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' })
   }
-  
+
   if (!supabase) {
     return res.status(500).json({ error: 'Supabase Storage 설정이 되어있지 않습니다 (.env 확인)' })
   }

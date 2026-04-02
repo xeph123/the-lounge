@@ -210,8 +210,8 @@ export default function ProfilePage() {
   return (
     <div className="space-y-12 pb-24 min-h-screen relative">
       <section className="flex flex-col gap-6 pt-12 pb-8 border-b border-border">
-        <div className="flex items-center justify-between">
-          <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter font-serif italic text-primary">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tighter font-serif italic text-primary break-words">
             {user.name}
           </h1>
           <div className="flex items-center gap-4">
@@ -318,7 +318,7 @@ export default function ProfilePage() {
 
           {/* Grouped Pagination Controls - Only for List View */}
           {viewMode === "list" && totalPages > 1 && (
-            <div className="flex items-center justify-between pt-16 mt-16 border-t border-border">
+            <div className="flex flex-wrap items-center justify-center md:justify-between gap-6 pt-16 mt-16 border-t border-border">
               <div className="flex items-center gap-2">
                 <Button 
                   variant="ghost" 
@@ -390,19 +390,19 @@ export default function ProfilePage() {
 
       {/* Edit Profile Overlay */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 bg-white/90 backdrop-blur-sm flex items-center justify-center p-6 overflow-y-auto">
-          <div className="bg-white border border-border w-full max-w-2xl p-12 md:p-16 relative transform translate-x-4 -translate-y-2 shadow-2xl my-8">
+        <div className="fixed inset-0 z-50 bg-white/95 backdrop-blur-sm flex items-start md:items-center justify-center p-0 sm:p-4 md:p-6 overflow-y-auto">
+          <div className="bg-white border-0 sm:border border-border w-full max-w-2xl min-h-screen sm:min-h-0 p-6 sm:p-8 md:p-16 relative transform sm:translate-x-1 sm:-translate-y-1 md:translate-x-4 md:-translate-y-2 shadow-none sm:shadow-2xl my-0 sm:my-8 flex flex-col justify-center">
             <button
               onClick={() => setIsEditing(false)}
               className="absolute top-6 right-6 p-2 text-secondary hover:text-primary hover:rotate-90 transition-all duration-300"
             >
               <X className="w-8 h-8" strokeWidth={1} />
             </button>
-            <div className="mb-12">
-              <h2 className="font-serif text-4xl md:text-5xl italic font-black uppercase tracking-tighter text-primary">
+            <div className="mb-8 md:mb-12 mt-8 sm:mt-0">
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl italic font-black uppercase tracking-tighter text-primary">
                 프로필 수정
               </h2>
-              <p className="font-sans text-xs tracking-[0.2em] uppercase text-secondary/60 mt-4">
+              <p className="font-sans text-[10px] md:text-xs tracking-[0.2em] uppercase text-secondary/60 mt-2 md:mt-4">
                 나만의 아이덴티티를 설정하세요.
               </p>
             </div>
@@ -415,7 +415,7 @@ export default function ProfilePage() {
                 <Input
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-6 text-xl bg-transparent transition-colors duration-300"
+                  className="rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-3 md:py-6 text-lg sm:text-xl bg-transparent transition-colors duration-300"
                   placeholder="이름을 입력하세요"
                   required
                 />
@@ -427,7 +427,7 @@ export default function ProfilePage() {
                 <Input
                   value={editDepartment}
                   onChange={(e) => setEditDepartment(e.target.value)}
-                  className="rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-6 text-xl bg-transparent transition-colors duration-300"
+                  className="rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-3 md:py-6 text-lg sm:text-xl bg-transparent transition-colors duration-300"
                   placeholder="소속 부서를 입력하세요"
                 />
               </div>
@@ -438,7 +438,7 @@ export default function ProfilePage() {
                 <textarea
                   value={editBio}
                   onChange={(e) => setEditBio(e.target.value)}
-                  className="w-full font-sans rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary focus-visible:outline-none px-0 py-2 text-xl bg-transparent transition-colors duration-300 resize-none min-h-[100px]"
+                  className="w-full font-sans rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary focus-visible:outline-none px-0 py-2 sm:text-xl text-lg bg-transparent transition-colors duration-300 resize-none min-h-[80px] md:min-h-[100px]"
                   placeholder="자신을 자유롭게 소개해주세요"
                 />
               </div>
@@ -451,7 +451,7 @@ export default function ProfilePage() {
                     type={showPassword ? "text" : "password"}
                     value={editPassword}
                     onChange={(e) => setEditPassword(e.target.value)}
-                    className="w-full rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-6 text-xl bg-transparent transition-colors duration-300 pr-12"
+                    className="w-full rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-3 md:py-6 text-lg sm:text-xl bg-transparent transition-colors duration-300 pr-12"
                     placeholder="••••••••"
                   />
                   <button
@@ -473,7 +473,7 @@ export default function ProfilePage() {
                     type={showPasswordConfirm ? "text" : "password"}
                     value={editPasswordConfirm}
                     onChange={(e) => setEditPasswordConfirm(e.target.value)}
-                    className="w-full rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-6 text-xl bg-transparent transition-colors duration-300 pr-12"
+                    className="w-full rounded-none border-0 border-b border-border focus-visible:ring-0 focus-visible:border-primary px-0 py-3 md:py-6 text-lg sm:text-xl bg-transparent transition-colors duration-300 pr-12"
                     placeholder="••••••••"
                   />
                   <button
@@ -490,7 +490,7 @@ export default function ProfilePage() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="rounded-none font-serif italic text-xl uppercase tracking-widest px-12 py-8 bg-primary text-white hover:bg-primary/90 hover:tracking-[0.2em] transition-all duration-500 transform translate-x-2 -translate-y-2"
+                  className="rounded-none font-serif italic text-base md:text-xl uppercase tracking-widest px-8 md:px-12 py-6 md:py-8 bg-primary text-white hover:bg-primary/90 hover:tracking-[0.2em] transition-all duration-500 transform md:translate-x-2 md:-translate-y-2"
                 >
                   {isSubmitting ? "저장 중..." : "변경사항 저장"}
                 </Button>

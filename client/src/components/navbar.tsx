@@ -86,9 +86,17 @@ export function Navbar() {
         </div>
       </div>
       
+      {/* 모바일 메뉴 오버레이 */}
+      {isMobileMenuOpen && (
+        <div 
+          className="absolute top-20 left-0 w-full h-[calc(100vh-5rem)] bg-black/20 z-40 md:hidden backdrop-blur-sm"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+      
       {/* 모바일 메뉴 */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-white absolute w-full left-0 p-6 flex flex-col gap-6 shadow-xl animate-in slide-in-from-top-2">
+        <div className="md:hidden z-50 border-t bg-white absolute w-full left-0 p-6 flex flex-col gap-6 shadow-xl animate-in slide-in-from-top-2">
           <nav className="flex flex-col gap-4 text-base font-medium">
             <Link to="/category/notice" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>NOTICE</Link>
             <Link to="/category/lounge" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>LOUNGE</Link>

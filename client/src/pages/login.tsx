@@ -44,11 +44,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-[85vh] w-full grid grid-cols-12 gap-8 px-8 py-20 relative bg-paper text-foreground overflow-hidden">
-      <div className="col-span-12 md:col-start-2 md:col-span-6 lg:col-start-2 lg:col-span-5 relative z-10">
+    <div className="min-h-[85vh] w-full grid grid-cols-12 gap-4 md:gap-8 px-4 sm:px-8 py-12 md:py-20 relative bg-paper text-foreground overflow-hidden">
+      <div className="col-span-12 md:col-start-2 md:col-span-8 lg:col-start-2 lg:col-span-5 relative z-10">
 
-        <div className="mb-[80px] animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold tracking-[-0.02em] leading-[1.4] mb-4 uppercase">
+        <div className="mb-[60px] md:mb-[80px] animate-in fade-in slide-in-from-bottom-4 duration-1000 ease-out">
+          <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.02em] leading-[1.4] mb-4 uppercase">
             Access<br />
             <span className="italic font-medium">the Silence.</span>
           </h1>
@@ -95,8 +95,8 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="pt-12 relative flex justify-end">
-            <div className="transform translate-x-[24px] -translate-y-[12px]">
+          <div className="pt-8 md:pt-12 relative flex justify-end">
+            <div className="transform md:translate-x-[24px] md:-translate-y-[12px]">
               <button
                 type="submit"
                 disabled={isLoading}

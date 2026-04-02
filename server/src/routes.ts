@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import multer from 'multer'
 import path from 'path'
-import fs from 'fs'
+import { createClient } from '@supabase/supabase-js'
 import * as authController from './modules/auth/auth.controller'
 import * as userController from './modules/user/user.controller'
 import * as postController from './modules/post/post.controller'
@@ -11,31 +11,53 @@ import { authenticate } from './middlewares/auth'
 
 const router = Router()
 
-// Upload setup
-const uploadsDir = path.join(process.cwd(), 'uploads')
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true })
-}
+// Supabase Storage Setup
+const supabaseUrl = process.env.SUPABASE_URL || ''
+const supabaseKey = process.env.SUPABASE_KEY || ''
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir)
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname)
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
-    cb(null, file.fieldname + '-' + uniqueSuffix + ext)
-  }
-})
-
+// Upload setup (Memory Storage)
+const storage = multer.memoryStorage()
 const upload = multer({ storage })
 
-router.post('/upload', upload.single('image'), (req, res) => {
+router.post('/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' })
   }
-  const url = `/uploads/${req.file.filename}`
-  res.json({ url })
+  
+  if (!supabase) {
+    return res.status(500).json({ error: 'Supabase Storage 설정이 되어있지 않습니다 (.env 확인)' })
+  }
+
+  try {
+    const file = req.file
+    const ext = path.extname(file.originalname).toLowerCase()
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9)
+    const filename = `${uniqueSuffix}${ext}`
+
+    // Supabase 'uploads' 버킷에 파일 업로드
+    const { data, error } = await supabase.storage
+      .from('uploads')
+      .upload(filename, file.buffer, {
+        contentType: file.mimetype,
+        upsert: false
+      })
+
+    if (error) {
+      console.error('Supabase 업로드 에러:', error)
+      return res.status(500).json({ error: '스토리지 업로드에 실패했습니다.' })
+    }
+
+    // Public URL 가져오기
+    const { data: { publicUrl } } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(filename)
+
+    res.json({ url: publicUrl })
+  } catch (err) {
+    console.error('업로드 중 예기치 않은 에러:', err)
+    res.status(500).json({ error: '업로드 중 서버 에러가 발생했습니다.' })
+  }
 })
 
 // Auth

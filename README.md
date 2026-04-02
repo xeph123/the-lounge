@@ -38,8 +38,9 @@ the-lounge/
 ### 1. 사전 준비
 - Node.js (v18 이상 권장)
 - npm 또는 yarn
+- **Docker** (로컬 데이터베이스 실행용)
 
-### 2. 의존성 설치
+### 2. 의존성 설치 및 환경 변수 설정
 
 ```bash
 # 클라이언트 의존성 설치
@@ -49,15 +50,28 @@ npm install
 # 서버 의존성 설치
 cd ../server
 npm install
+
+# 환경 변수 파일 복사
+cp .env.example .env
 ```
+`.env` 파일을 열고 로컬 개발용 Docker 환경변수가 `localhost`를 가리키고 있는지 확인하세요.
 
-### 3. 데이터베이스 설정 (Server)
+### 3. 데이터베이스 및 스토리지 설정 (Server)
 
+**로컬 DB 세팅 (Docker 이용):**
 ```bash
+# 1. 뼈대 폴더 최상단(the-lounge)에서 로컬 DB 띄우기
+docker-compose up -d
+
+# 2. 서버 폴더로 와서 Prisma 마이그레이션 실행 (테이블 생성)
 cd server
-# Prisma 마이그레이션 실행 (데이터베이스 스키마 생성)
 npx prisma migrate dev
 ```
+
+**Supabase Storage 세팅 (로컬 및 배포 공통):**
+이 프로젝트는 파일 시스템 초기화(Vercel/Render 등)에 대비하여 이미지나 파일을 **Supabase Storage**에 업로드합니다.
+1. Supabase 대시보드 - Storage 메뉴에서 **`uploads`** 라는 이름의 Public Bucket을 생성합니다.
+2. `server/.env` 파일에 `SUPABASE_URL`과 `SUPABASE_KEY` 정보를 기입합니다.
 
 ### 4. 개발 서버 실행
 
@@ -75,25 +89,20 @@ npm run dev
 
 ## 🚀 배포 가이드 (Deployment)
 
-### 1. 데이터베이스 (Supabase)
-- [Supabase](https://supabase.com/)에서 프로젝트를 생성합니다.
-- Database Settings에서 `Transaction` 및 `Session` 모드 URL을 확인합니다.
-- 서버 마이그레이션을 위해 `npx prisma migrate dev`를 실행합니다.
-
-### 2. 백엔드 (Render / Railway)
-- **Render** 또는 **Railway**와 같은 무료 티어 서비스를 이용합니다.
-- 환경 변수 설정:
-  - `DATABASE_URL`: Supabase Transaction URL (포트 6543)
-  - `DIRECT_URL`: Supabase Session URL (포트 5432)
-  - `JWT_SECRET`: 임의의 안전한 문자열
+### 1. 백엔드 (Render / Railway)
+- **Render**와 같은 클라우드 서비스에 서버를 배포합니다.
+- 반드시 대시보드의 **Environment Variables(환경 변수)** 란에 직접 다음 값들을 입력해주세요 (배포 서버에는 `.env` 파일을 올리지 않기 때문입니다):
+  - `DATABASE_URL`: Supabase 연결 문자열 (포트 6543)
+  - `DIRECT_URL`: Supabase 세션 연결 문자열 (포트 5432)
+  - `SUPABASE_URL`: Supabase Project URL
+  - `SUPABASE_KEY`: Supabase API Key (Secret/Anon 모두 가능)
+  - `JWT_SECRET`: 임의의 안전한 암호화 시크릿 키
   - `PORT`: 4000 (또는 서비스 기본값)
 
-### 3. 프론트엔드 (Vercel)
+### 2. 프론트엔드 (Vercel)
 - [Vercel](https://vercel.com/)에 `client` 폴더를 연결하여 배포합니다.
-- **Root Directory**: `client` 설정을 확인하세요.
 - **Environment Variables**:
   - `VITE_API_URL`: 배포된 백엔드 서버의 주소 (예: `https://your-api.onrender.com`)
-- Vercel은 자동으로 HTTPS와 최적화된 빌드를 제공합니다.
 
 ---
 

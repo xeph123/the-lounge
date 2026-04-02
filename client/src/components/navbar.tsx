@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom"
-import { Menu, Search, User, LogOut } from "lucide-react"
+import { Menu, Search, User, LogOut, X } from "lucide-react"
 import { Button } from "./ui/button"
 import { useEffect, useState } from "react"
 import { SearchOverlay } from "./SearchOverlay"
@@ -9,6 +9,7 @@ export function Navbar() {
   const [userName, setUserName] = useState("")
   const [userId, setUserId] = useState("")
   const [userRole, setUserRole] = useState("")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const navigate = useNavigate()
 
@@ -79,11 +80,33 @@ export function Navbar() {
           <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
             <Search className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
+          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
         </div>
       </div>
+      
+      {/* 모바일 메뉴 */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t bg-white absolute w-full left-0 p-6 flex flex-col gap-6 shadow-xl animate-in slide-in-from-top-2">
+          <nav className="flex flex-col gap-4 text-base font-medium">
+            <Link to="/category/notice" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>NOTICE</Link>
+            <Link to="/category/lounge" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>LOUNGE</Link>
+            <Link to="/category/tech" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>TECH</Link>
+            <Link to="/category/idea" className="hover:text-accent transition-colors font-sans" onClick={() => setIsMobileMenuOpen(false)}>IDEA</Link>
+            
+            {isLoggedIn && (
+              <div className="flex flex-col gap-4 pt-4 border-t mt-2">
+                <Link to="/post/create" className="text-primary font-bold font-serif hover:opacity-80 transition-opacity" onClick={() => setIsMobileMenuOpen(false)}>글 작성하기</Link>
+                {userRole === 'ADMIN' && (
+                  <Link to="/admin/users" className="text-secondary font-bold font-serif hover:opacity-80 transition-opacity" onClick={() => setIsMobileMenuOpen(false)}>USER ADMIN</Link>
+                )}
+                <Link to={`/user/${userId}`} className="text-secondary font-sans hover:opacity-80 transition-opacity" onClick={() => setIsMobileMenuOpen(false)}>마이페이지 ({userName})</Link>
+              </div>
+            )}
+          </nav>
+        </div>
+      )}
     </header>
     <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </>

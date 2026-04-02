@@ -78,9 +78,12 @@ export default function PostCreatePage() {
       const input = document.createElement("input")
       input.setAttribute("type", "file")
       input.setAttribute("accept", "image/*")
+      input.style.display = "none"
+      document.body.appendChild(input) // iOS 사파리 대응 (DOM에 추가되어 있어야 click 이벤트가 정상 작동함)
       input.click()
 
       input.onchange = async () => {
+        document.body.removeChild(input) // 정상적으로 파일 선택 시 제거
         const file = input.files?.[0]
         if (!file) return
 
@@ -198,21 +201,21 @@ export default function PostCreatePage() {
           ) : (
             <div
               className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
-              onClick={() => fileInputRef.current?.click()}
             >
               <ImagePlus className="w-8 h-8 mb-4 text-secondary" strokeWidth={1.5} />
               <p className="text-sm tracking-widest uppercase text-secondary font-medium">
                 {isUploading ? "Uploading..." : "썸네일을 추가해주세요"}
               </p>
+              {/* 모바일 호환성을 위해 hidden 대신 투명하게 올려두는 방식을 사용 */}
+              <input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleImageUpload}
+                accept="image/*"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              />
             </div>
           )}
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-            accept="image/*"
-            className="hidden"
-          />
         </div>
 
         <input

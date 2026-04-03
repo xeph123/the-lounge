@@ -121,7 +121,7 @@ export default function CategoryPage() {
           <p className="text-sm md:text-base font-sans tracking-[0.3em] uppercase opacity-60 ml-1">
             THE LOUNGE : {slug} STORIES
           </p>
-          <div className="flex items-center gap-2 border border-border p-1 bg-surface">
+          <div className="flex items-center gap-2 bg-surface">
             <button
               onClick={() => handleViewModeChange("grid")}
               className={`p-2 transition-colors ${viewMode === "grid" ? "text-primary bg-background shadow-sm" : "text-secondary/40 hover:text-primary"}`}

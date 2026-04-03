@@ -5,7 +5,7 @@ export function Layout() {
   return (
     <div className="min-h-screen bg-paper font-sans antialiased text-primary">
       <Navbar />
-      <main className="container mx-auto px-6 py-12 lg:max-w-[1280px]">
+      <main className="container mx-auto px-6 py-6 lg:max-w-[1280px]">
         <Outlet />
       </main>
       <footer className="border-t bg-white py-12">

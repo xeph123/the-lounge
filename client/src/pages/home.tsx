@@ -33,7 +33,7 @@ export default function HomePage() {
         console.error("Failed to parse user", e)
       }
     }
-    
+
     const fetchPosts = async () => {
       try {
         const response = await api.get("/posts?sort=popular")
@@ -50,7 +50,7 @@ export default function HomePage() {
         // Asymmetric Masonry Layout Mapping
         const formattedPosts = data.slice(0, 6).map((post: any, index: number) => {
           const plainTextDescription = post.content ? stripHtml(post.content) : "No description available."
-          
+
           // Art Gallery Asymmetric Sizing (6 pieces for optimal balance)
           // 0: Huge Portrait (Left)
           // 1: Wide Landscape (Right Top)
@@ -58,12 +58,12 @@ export default function HomePage() {
           // 3: Small Square (Right Bottom)
           // 4: Medium Portrait (Bottom Left Offset)
           // 5: Typographic Only (Bottom Right)
-          
+
           let masonryClass = ""
           let imgAspect = ""
-          
-          switch(index) {
-            case 0: 
+
+          switch (index) {
+            case 0:
               masonryClass = "md:col-span-6 md:row-span-3"
               imgAspect = "aspect-[3/4]"
               break
@@ -137,15 +137,7 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 pb-24">
-      <section className="flex flex-col gap-6 pt-12">
-        <h1 className="text-7xl md:text-9xl font-black tracking-tighter uppercase font-serif">
-          THE <br /> LOUNGE
-        </h1>
-        {/* Minimalist Border Only - Removed Masthead Text for Extreme Emptiness */}
-        <div className="border-b border-border mt-12 mb-8"></div>
-      </section>
-
-      <div className="flex justify-end pt-8 pb-16">
+      <div className="flex justify-end mb-0">
         <Link to="/post/create" className="group relative flex items-center gap-6 pb-2 border-b-2 border-transparent hover:border-primary transition-all duration-500">
           <span className="font-serif text-xl md:text-2xl font-bold italic uppercase tracking-[0.2em] group-hover:tracking-[0.3em] transition-all duration-500 ease-in-out text-primary">
             <span className="text-3xl md:text-4xl">I</span>nscribe the Silence
@@ -174,21 +166,21 @@ export default function HomePage() {
             </div>
           ) : posts.length > 0 ? (
             posts.map((post: any, index: number) => (
-              <Link 
-                key={post.id} 
-                to={`/post/${post.id}`} 
+              <Link
+                key={post.id}
+                to={`/post/${post.id}`}
                 className={`group flex flex-col relative ${post.masonryClass}`}
               >
                 {isAdmin && (
                   <div className="absolute top-4 right-4 z-20 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button 
+                    <button
                       onClick={(e) => handleEdit(e, post.id)}
                       className="p-2 bg-white/80 backdrop-blur-sm text-primary hover:text-accent rounded-full shadow-sm hover:scale-110 transition-all"
                       title="Edit Post"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => handleDelete(e, post.id)}
                       className="p-2 bg-white/80 backdrop-blur-sm text-destructive hover:text-red-600 rounded-full shadow-sm hover:scale-110 transition-all"
                       title="Delete Post"
@@ -199,14 +191,14 @@ export default function HomePage() {
                 )}
                 {post.thumbnail && !post.isTypographic && (
                   <div className={`w-full ${post.imgAspect} overflow-hidden bg-surface mb-6 relative`}>
-                    <img 
-                      src={post.thumbnail} 
-                      alt={post.title} 
+                    <img
+                      src={post.thumbnail}
+                      alt={post.title}
                       className="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                     />
                   </div>
                 )}
-                
+
                 <div className={`flex flex-col ${post.isTypographic ? 'border-t border-primary pt-12' : ''}`}>
                   <div className="flex items-center gap-4 mb-4">
                     <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">
@@ -216,11 +208,11 @@ export default function HomePage() {
                       {post.date}
                     </span>
                   </div>
-                  
+
                   <h3 className={`font-serif font-bold tracking-tight text-foreground group-hover:text-primary transition-colors duration-500 leading-[1.1] ${post.isTypographic ? 'text-5xl md:text-7xl italic line-clamp-4' : index === 0 ? 'text-4xl md:text-5xl line-clamp-4' : 'text-2xl md:text-3xl line-clamp-3'}`}>
                     {post.title}
                   </h3>
-                  
+
                   <span className="mt-8 inline-block text-[10px] font-bold uppercase tracking-widest text-secondary/40 mb-16">
                     by {post.author}
                   </span>

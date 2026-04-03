@@ -20,11 +20,11 @@ export default function CategoryPage() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<"grid" | "list">("list")
-  
+
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const limit = 12
-  
+
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const handleViewModeChange = (mode: "grid" | "list") => {
@@ -40,10 +40,10 @@ export default function CategoryPage() {
       try {
         const response = await api.get(`/posts?category=${slug}&page=${currentPage}&limit=${limit}`)
         const responseData = response.data
-        
+
         const data = Array.isArray(responseData.data) ? responseData.data : responseData.data?.posts || []
         const totalCount = responseData.meta?.totalCount || responseData.data?.totalCount || responseData.data?.meta?.totalCount || data.length
-        
+
         setTotalPages(Math.max(1, Math.ceil(totalCount / limit)))
 
         const stripHtml = (html: string) => {
@@ -51,7 +51,7 @@ export default function CategoryPage() {
           tmp.innerHTML = html
           return tmp.textContent || tmp.innerText || ""
         }
-        
+
         const formattedPosts = data.map((post: Post) => {
           const plainTextDescription = post.content ? stripHtml(post.content) : "No description available."
           return {
@@ -113,7 +113,7 @@ export default function CategoryPage() {
 
   return (
     <div className="space-y-12 pb-24 min-h-screen">
-      <section className="flex flex-col gap-6 pt-12 pb-8 border-b border-border">
+      <section className="flex flex-col gap-6 pb-8 border-b border-border">
         <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter font-serif italic">
           {slug}
         </h1>
@@ -122,13 +122,13 @@ export default function CategoryPage() {
             THE LOUNGE : {slug} STORIES
           </p>
           <div className="flex items-center gap-2 border border-border p-1 bg-surface">
-            <button 
+            <button
               onClick={() => handleViewModeChange("grid")}
               className={`p-2 transition-colors ${viewMode === "grid" ? "text-primary bg-background shadow-sm" : "text-secondary/40 hover:text-primary"}`}
             >
               <LayoutGrid className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={() => handleViewModeChange("list")}
               className={`p-2 transition-colors ${viewMode === "list" ? "text-primary bg-background shadow-sm" : "text-secondary/40 hover:text-primary"}`}
             >
@@ -148,16 +148,16 @@ export default function CategoryPage() {
             <>
               <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post, idx) => (
-                  <BentoCard 
-                    key={`${post.id}-${idx}`} 
-                    {...post} 
-                    className="h-[400px] shadow-none hover:shadow-xl hover:-translate-y-1 transition-all duration-500 rounded-none border-border" 
+                  <BentoCard
+                    key={`${post.id}-${idx}`}
+                    {...post}
+                    className="h-[400px] shadow-none hover:shadow-xl hover:-translate-y-1 transition-all duration-500 rounded-none border-border"
                   />
                 ))}
               </div>
               <div ref={observerTarget} className="h-10 mt-8">
                 {loading && currentPage > 1 && (
-                   <div className="flex justify-center text-sm text-secondary">Loading more...</div>
+                  <div className="flex justify-center text-sm text-secondary">Loading more...</div>
                 )}
               </div>
             </>
@@ -183,21 +183,21 @@ export default function CategoryPage() {
               ))}
             </div>
           )}
-          
+
           {/* Minimalist Pagination Controls - Only for List View */}
           {viewMode === "list" && totalPages > 1 && (
             <div className="flex items-center justify-between pt-16 mt-16 border-t border-border">
               <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(1)}
                   disabled={currentPage === 1}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0"
                 >
                   <ChevronsLeft className="w-4 h-4" />
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0 ml-2"
@@ -217,11 +217,10 @@ export default function CategoryPage() {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-8 h-8 flex items-center justify-center transition-colors ${
-                        currentPage === pageNum 
-                          ? "bg-primary text-primary-foreground" 
-                          : "hover:text-primary hover:bg-surface"
-                      }`}
+                      className={`w-8 h-8 flex items-center justify-center transition-colors ${currentPage === pageNum
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:text-primary hover:bg-surface"
+                        }`}
                     >
                       {pageNum}
                     </button>
@@ -230,16 +229,16 @@ export default function CategoryPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0 mr-2"
                 >
                   Next <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(totalPages)}
                   disabled={currentPage === totalPages}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0"

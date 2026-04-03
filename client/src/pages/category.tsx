@@ -117,7 +117,7 @@ export default function CategoryPage() {
         <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter font-serif italic">
           {slug}
         </h1>
-        <div className="flex items-end justify-between mt-4">
+        <div className="flex items-end justify-between mt-4 pb-8">
           <p className="text-sm md:text-base font-sans tracking-[0.3em] uppercase opacity-60 ml-1">
             THE LOUNGE : {slug} STORIES
           </p>

@@ -146,7 +146,7 @@ export default function CategoryPage() {
         <>
           {viewMode === "grid" ? (
             <>
-              <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-3 mt-8">
                 {posts.map((post, idx) => (
                   <BentoCard
                     key={`${post.id}-${idx}`}

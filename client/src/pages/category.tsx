@@ -186,7 +186,7 @@ export default function CategoryPage() {
 
           {/* Minimalist Pagination Controls - Only for List View */}
           {viewMode === "list" && totalPages > 1 && (
-            <div className="flex items-center justify-between pt-16 mt-16 border-t border-border">
+            <div className="flex items-center justify-between pt-16 mt-16">
               <div className="flex items-center gap-2">
                 <Button
                   variant="ghost"

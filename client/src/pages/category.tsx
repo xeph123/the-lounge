@@ -162,7 +162,7 @@ export default function CategoryPage() {
               </div>
             </>
           ) : (
-            <div className="flex flex-col border-t border-border mt-8">
+            <div className="flex flex-col mt-8">
               {posts.map((post) => (
                 <Link key={post.id} to={`/post/${post.id}`} className="group flex flex-col md:flex-row md:items-start gap-6 md:gap-12 py-10 border-b border-border/50 hover:border-primary transition-colors">
                   <div className="w-32 flex-shrink-0 flex flex-col">

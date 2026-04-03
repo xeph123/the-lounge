@@ -191,7 +191,7 @@ export default function PostListPage() {
             </>
           ) : (
             /* Magazine Index Style List View */
-            <div className="flex flex-col border-t border-border mt-8">
+            <div className="flex flex-col border-t border-border">
               {posts.map((post) => (
                 <Link key={post.id} to={`/post/${post.id}`} className="group relative flex flex-col md:flex-row md:items-start gap-6 md:gap-12 py-10 border-b border-border/50 hover:border-primary transition-colors">
                   <div className="w-32 flex-shrink-0 flex flex-col">

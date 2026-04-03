@@ -21,12 +21,12 @@ export default function PostListPage() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("list")
   const [isAdmin, setIsAdmin] = useState(false)
   const navigate = useNavigate()
-  
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const limit = 12 // 한 페이지에 보여줄 개수
-  
+
   const observerTarget = useRef<HTMLDivElement>(null)
 
   const handleViewModeChange = (mode: "grid" | "list") => {
@@ -54,11 +54,11 @@ export default function PostListPage() {
       try {
         const response = await api.get(`/posts?page=${currentPage}&limit=${limit}`)
         const responseData = response.data
-        
+
         // Handle nested data structures correctly based on previous backend findings
         const data = Array.isArray(responseData.data) ? responseData.data : responseData.data?.posts || []
         const totalCount = responseData.meta?.totalCount || responseData.data?.totalCount || responseData.data?.meta?.totalCount || data.length
-        
+
         setTotalPages(Math.max(1, Math.ceil(totalCount / limit)))
 
         // Helper function to strip HTML tags
@@ -140,7 +140,7 @@ export default function PostListPage() {
 
   return (
     <div className="space-y-12 pb-24 min-h-screen">
-      <section className="flex flex-col gap-6 pt-12 pb-8 border-b border-border">
+      <section className="flex flex-col gap-6 pt-12 pb-8 mb-0 border-b border-border">
         <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase font-serif italic">
           Archive
         </h1>
@@ -150,13 +150,13 @@ export default function PostListPage() {
           </p>
           {/* View Toggle */}
           <div className="flex items-center gap-2 border border-border p-1 bg-surface">
-            <button 
+            <button
               onClick={() => handleViewModeChange("grid")}
               className={`p-2 transition-colors ${viewMode === "grid" ? "text-primary bg-background shadow-sm" : "text-secondary/40 hover:text-primary"}`}
             >
               <LayoutGrid className="w-5 h-5" />
             </button>
-            <button 
+            <button
               onClick={() => handleViewModeChange("list")}
               className={`p-2 transition-colors ${viewMode === "list" ? "text-primary bg-background shadow-sm" : "text-secondary/40 hover:text-primary"}`}
             >
@@ -185,7 +185,7 @@ export default function PostListPage() {
               </div>
               <div ref={observerTarget} className="h-10 mt-8">
                 {loading && currentPage > 1 && (
-                   <div className="flex justify-center text-sm text-secondary">Loading more...</div>
+                  <div className="flex justify-center text-sm text-secondary">Loading more...</div>
                 )}
               </div>
             </>
@@ -210,14 +210,14 @@ export default function PostListPage() {
                   )}
                   {isAdmin && (
                     <div className="absolute right-0 top-1/2 -translate-y-1/2 md:top-10 md:translate-y-0 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 mr-2 md:mr-0">
-                      <button 
+                      <button
                         onClick={(e) => handleEdit(e, post.id)}
                         className="p-2 bg-surface border border-border text-primary hover:bg-primary hover:text-white rounded-none shadow-sm transition-all"
                         title="Edit Post"
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
-                      <button 
+                      <button
                         onClick={(e) => handleDelete(e, post.id)}
                         className="p-2 bg-surface border border-border text-destructive hover:bg-red-600 hover:text-white rounded-none shadow-sm transition-all"
                         title="Delete Post"
@@ -235,16 +235,16 @@ export default function PostListPage() {
           {viewMode === "list" && totalPages > 1 && (
             <div className="flex items-center justify-between pt-16 mt-16 border-t border-border">
               <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(1)}
                   disabled={currentPage === 1}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0"
                 >
                   <ChevronsLeft className="w-4 h-4" />
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                   disabled={currentPage === 1}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0 ml-2"
@@ -252,41 +252,40 @@ export default function PostListPage() {
                   <ChevronLeft className="w-4 h-4 mr-2" /> Prev
                 </Button>
               </div>
-              
+
               <div className="flex items-center gap-2 font-sans text-sm font-bold text-secondary">
                 {Array.from({ length: 5 }).map((_, idx) => {
                   const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1
                   const pageNum = startPage + idx
-                  
+
                   if (pageNum > totalPages) return null
-                  
+
                   return (
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-8 h-8 flex items-center justify-center transition-colors ${
-                        currentPage === pageNum 
-                          ? "bg-primary text-primary-foreground" 
-                          : "hover:text-primary hover:bg-surface"
-                      }`}
+                      className={`w-8 h-8 flex items-center justify-center transition-colors ${currentPage === pageNum
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:text-primary hover:bg-surface"
+                        }`}
                     >
                       {pageNum}
                     </button>
                   )
                 })}
               </div>
-              
+
               <div className="flex items-center gap-2">
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
                   disabled={currentPage === totalPages}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0 mr-2"
                 >
                   Next <ChevronRight className="w-4 h-4 ml-2" />
                 </Button>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={() => setCurrentPage(totalPages)}
                   disabled={currentPage === totalPages}
                   className="font-serif italic font-bold tracking-widest uppercase rounded-none hover:bg-transparent hover:text-primary disabled:opacity-20 px-0"

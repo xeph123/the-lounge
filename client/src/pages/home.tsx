@@ -147,7 +147,7 @@ export default function HomePage() {
       </div>
 
       <section className="flex flex-col gap-8 pt-8 pb-8">
-        <div className="flex items-end justify-between border-b border-border pb-8">
+        <div className="flex items-end justify-between">
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase font-serif">
             Top <br /> Stories
           </h2>

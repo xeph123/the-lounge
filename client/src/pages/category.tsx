@@ -113,7 +113,7 @@ export default function CategoryPage() {
 
   return (
     <div className="space-y-12 pb-24 min-h-screen">
-      <section className="flex flex-col gap-6 pb-8 border-b border-border">
+      <section className="flex flex-col gap-6 mb-0 border-b border-border">
         <h1 className="text-6xl md:text-8xl font-black uppercase tracking-tighter font-serif italic">
           {slug}
         </h1>
@@ -155,14 +155,14 @@ export default function CategoryPage() {
                   />
                 ))}
               </div>
-              <div ref={observerTarget} className="h-10 mt-8">
+              <div ref={observerTarget} className="h-10">
                 {loading && currentPage > 1 && (
                   <div className="flex justify-center text-sm text-secondary">Loading more...</div>
                 )}
               </div>
             </>
           ) : (
-            <div className="flex flex-col mt-8">
+            <div className="flex flex-col">
               {posts.map((post) => (
                 <Link key={post.id} to={`/post/${post.id}`} className="group flex flex-col md:flex-row md:items-start gap-6 md:gap-12 py-10 border-b border-border/50 hover:border-primary transition-colors">
                   <div className="w-32 flex-shrink-0 flex flex-col">
